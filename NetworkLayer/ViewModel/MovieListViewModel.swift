@@ -25,8 +25,11 @@ class MovieListViewModel {
             print("URL inválida")
             return
         }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
 
-        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
 
             if let error = error {
                 print("Erro na requisição: \(error.localizedDescription)")
