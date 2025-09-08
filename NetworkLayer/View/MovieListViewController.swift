@@ -15,14 +15,25 @@ class MovieListViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
 
-        viewModel.fetchGenres {
+        // Busca gêneros e filmes usando o novo ViewModel
+        viewModel.fetchData {
             DispatchQueue.main.async {
+                
+                
+                // Print dos gêneros
                 print("Gêneros de filmes:")
-               
                 for genre in self.viewModel.genres {
                     let name = genre.name ?? "Nome Indisponível"
                     let id = genre.id ?? 0
                     print("- \(name) (id: \(id))")
+                }
+
+                // Print dos filmes populares
+                print("\nFilmes populares:")
+                for movie in self.viewModel.movies {
+                    let release = movie.releaseDate ?? "Sem data"
+                    let genreNames = self.viewModel.genreNames(for: movie).joined(separator: ", ")
+                    print("- \(movie.title) (\(release)) | Gêneros: \(genreNames)")
                 }
             }
         }

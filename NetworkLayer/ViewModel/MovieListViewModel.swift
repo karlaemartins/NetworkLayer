@@ -10,46 +10,57 @@ import Foundation
 class MovieListViewModel {
 
     private let apiKey = "e20233fdd33e4c1c99bc3460d3394900"
-    private let baseURL = "https://api.themoviedb.org/3"
+    private let language = "pt-BR"
+    
+    var genres: [Genre] = []
+    var movies: [Movie] = []
 
-    private(set) var genres: [Genre] = []
-
+    //Gêneros
     func fetchGenres(completion: @escaping () -> Void) {
-        var components = URLComponents(string: "\(baseURL)/genre/movie/list")
-        components?.queryItems = [
-            URLQueryItem(name: "api_key", value: apiKey),
-            URLQueryItem(name: "language", value: "pt-BR")
-        ]
-
-        guard let url = components?.url else {
-            print("URL inválida")
-            return
-        }
+        let endpoint = Services.genres(apiKey: apiKey, language: language)
         
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-
+        NetworkRequest.instance.dispatch(endPoint: endpoint, tipo: GenreResponse.self) { [weak self] response, _, error in
             if let error = error {
-                print("Erro na requisição: \(error.localizedDescription)")
-                return
-            }
-
-            guard let data = data else {
-                print("Nenhum dado recebido")
-                return
-            }
-
-            do {
-                let decoded = try JSONDecoder().decode(GenreResponse.self, from: data)
-                self.genres = decoded.genres ?? []
+                print("Erro ao buscar gêneros: \(error.localizedDescription)")
                 completion()
-            } catch {
-                print("Erro ao decodificar JSON: \(error)")
+                return
+            }
+            
+            self?.genres = response?.genres ?? []
+            completion()
+        }
+    }
+    
+    //Filmes Populares
+    func fetchMovies(page: Int = 1, completion: @escaping () -> Void) {
+        let endpoint = Services.popularMovies(apiKey: apiKey, language: language, page: page)
+        
+        NetworkRequest.instance.dispatch(endPoint: endpoint, tipo: MovieResponse.self) { [weak self] response, _, error in
+            if let error = error {
+                print("Erro ao buscar filmes: \(error.localizedDescription)")
+                completion()
+                return
+            }
+            
+            self?.movies = response?.results ?? []
+            completion()
+        }
+    }
+    
+    //generos e filmes populares
+    func fetchData(completion: @escaping () -> Void) {
+        //busca dos generos
+        fetchGenres { [weak self] in
+            //busca dos filmes populares
+            self?.fetchMovies {
+                completion()
             }
         }
-
-        task.resume()
+    }
+    
+    //função para pegar nomes de generos de um filme
+    func genreNames(for movie: Movie) -> [String] {
+        guard let ids = movie.genreIDs else { return [] }
+        return genres.filter { ids.contains($0.id ?? -1) }.compactMap { $0.name }
     }
 }
