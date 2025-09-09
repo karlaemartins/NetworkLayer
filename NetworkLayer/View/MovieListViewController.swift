@@ -30,7 +30,7 @@ class MovieListViewController: UIViewController {
 
                 // Print dos filmes populares
                 print("\nFilmes populares:")
-                for movie in self.viewModel.movies {
+                for movie in self.viewModel.popularMovies {
                     let release = movie.releaseDate ?? "Sem data"
                     let genreNames = self.viewModel.genreNames(for: movie).joined(separator: ", ")
                     print("- \(movie.title) (\(release)) | Gêneros: \(genreNames)")

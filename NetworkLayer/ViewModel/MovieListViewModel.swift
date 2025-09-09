@@ -13,7 +13,7 @@ class MovieListViewModel {
     private let language = "pt-BR"
     
     var genres: [Genre] = []
-    var movies: [Movie] = []
+    var popularMovies: [Movie] = []
 
     //Gêneros
     func fetchGenres(completion: @escaping () -> Void) {
@@ -32,7 +32,7 @@ class MovieListViewModel {
     }
     
     //Filmes Populares
-    func fetchMovies(page: Int = 1, completion: @escaping () -> Void) {
+    func fetchPopularMovies(page: Int = 1, completion: @escaping () -> Void) {
         let endpoint = Services.popularMovies(apiKey: apiKey, language: language, page: page)
         
         NetworkRequest.instance.dispatch(endPoint: endpoint, tipo: MovieResponse.self) { [weak self] response, _, error in
@@ -42,7 +42,7 @@ class MovieListViewModel {
                 return
             }
             
-            self?.movies = response?.results ?? []
+            self?.popularMovies = response?.results ?? []
             completion()
         }
     }
@@ -52,7 +52,7 @@ class MovieListViewModel {
         //busca dos generos
         fetchGenres { [weak self] in
             //busca dos filmes populares
-            self?.fetchMovies {
+            self?.fetchPopularMovies {
                 completion()
             }
         }
