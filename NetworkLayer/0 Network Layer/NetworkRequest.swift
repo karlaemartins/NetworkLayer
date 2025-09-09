@@ -42,3 +42,4 @@ public struct NetworkRequest: NetworkDispatch {
         }.resume()
     }
 }
+ 
