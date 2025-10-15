@@ -17,6 +17,7 @@ protocol EndPoint {
     var body: [String: Any] { get }
 }
 
+//extensão que gera a URL aut. a partir das propriedades do protocolo acima.
 extension EndPoint {
     var headers: [String: String] { [:] }
     var body: [String: Any] { [:] }

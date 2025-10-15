@@ -10,18 +10,14 @@ import Foundation
 enum Services {
 
     case genres(apiKey: String, language: String)
-    
     case popularMovies(apiKey: String, language: String, page: Int)
-    
     case movieDetails(id: Int, apiKey: String, language: String)
 }
 
 extension Services: EndPoint {
     
     var scheme: String { "https" }
-    
     var host: String { "api.themoviedb.org" }
-    
     var path: String {
         switch self {
         case .genres:

@@ -28,11 +28,13 @@ struct Movie: Codable {
     let releaseDate: String?      //ano de lançamento
     let genreIDs: [Int]?          //ids dos gêneros
     let posterPath: String?       //imagem
+    let overview: String?         //sinopse
 
     enum CodingKeys: String, CodingKey {
-        case id, title
+        case id, title, overview
         case releaseDate = "release_date"
         case genreIDs = "genre_ids"
         case posterPath = "poster_path"
+        
     }
 }

@@ -22,6 +22,7 @@ class MovieListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+        navigationItem.backButtonTitle = ""
         setupTableView()
         fetchMovies()
     }
@@ -29,6 +30,7 @@ class MovieListViewController: UIViewController {
     private func setupTableView() {
         view.addSubview(tableView)
         tableView.dataSource = self
+        tableView.delegate = self
         
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.topAnchor),
@@ -67,3 +69,15 @@ extension MovieListViewController: UITableViewDataSource {
         
     }
 }
+
+//funçao para o clique da célula
+extension MovieListViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let movie = viewModel.popularMovies[indexPath.row]
+        let genres = viewModel.genreNames(for: movie).joined(separator: ", ")
+        let detailVC = MovieDetailViewController(movie: movie, genres: genres)
+        navigationController?.pushViewController(detailVC, animated: true)
+    }
+    
+}
+
