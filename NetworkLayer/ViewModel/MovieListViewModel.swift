@@ -9,7 +9,7 @@ import Foundation
 
 class MovieListViewModel {
 
-    private let apiKey = "e20233fdd33e4c1c99bc3460d3394900"
+    private let apiKey = Secrets.apiKey
     private let language = "pt-BR"
     
     var genres: [Genre] = []
