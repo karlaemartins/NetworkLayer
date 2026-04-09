@@ -10,22 +10,16 @@ import UIKit
 class AppCoordinator {
 
     let navigationController: UINavigationController
+    var childCoordinators: [AnyObject] = []
 
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
     }
 
     func start() {
-        let movieListVC = MovieListViewController()
-        
-        movieListVC.onMovieSelected = { [weak self] movie, genres in
-            guard let self = self else { return }
-            
-            let detailVC = MovieDetailViewController(movie: movie, genres: genres)
-            self.navigationController.pushViewController(detailVC, animated: true)
-        }
-        
-        navigationController.pushViewController(movieListVC, animated: false)
+        let homeCoordinator = HomeCoordinator(navigationController: navigationController)
+        childCoordinators.append(homeCoordinator)
+        homeCoordinator.start()
     }
 }
 
