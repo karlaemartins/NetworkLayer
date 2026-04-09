@@ -11,6 +11,8 @@ class MovieListViewController: UIViewController {
     
     private let viewModel = MovieListViewModel()
     
+    var onMovieSelected: ((Movie, String) -> Void)?
+    
     private let tableView: UITableView = {
         let tv = UITableView()
         tv.translatesAutoresizingMaskIntoConstraints = false
@@ -75,8 +77,7 @@ extension MovieListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let movie = viewModel.popularMovies[indexPath.row]
         let genres = viewModel.genreNames(for: movie).joined(separator: ", ")
-        let detailVC = MovieDetailViewController(movie: movie, genres: genres)
-        navigationController?.pushViewController(detailVC, animated: true)
+        onMovieSelected?(movie, genres)
     }
     
 }
