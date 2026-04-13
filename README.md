@@ -12,7 +12,7 @@ O aplicativo exibe uma lista de **filmes populares**, permitindo visualizar **po
 * Exibição do poster do filme
 * Visualização de gêneros e ano de lançamento
 * Tela de detalhes com sinopse
-* Navegação entre telas usando `UINavigationController`
+* Navegação entre telas utilizando **Coordinator + UINavigationController**
 
 ---
 
@@ -24,6 +24,7 @@ Este projeto foi desenvolvido para praticar conceitos fundamentais do desenvolvi
 * Consumo de **API REST**
 * Decodificação de JSON usando **Codable**
 * Separação de responsabilidades com **MVVM**
+* Implementação do padrão **Coordinator** para controle de navegação
 * Interface construída **programaticamente com UIKit**
 * Uso de **UITableView**
 
@@ -31,9 +32,9 @@ Este projeto foi desenvolvido para praticar conceitos fundamentais do desenvolvi
 
 ## Arquitetura
 
-O projeto utiliza uma estrutura inspirada em **MVVM**.
+O projeto utiliza uma estrutura baseada em **MVVM** combinada com o padrão **Coordinator**.
 
-Fluxo de comunicação:
+Fluxo de dados:
 
 View
 ↓
@@ -42,6 +43,14 @@ ViewModel
 Network Layer
 ↓
 API
+
+Fluxo de navegação:
+
+Coordinator
+↓
+UINavigationController
+↓
+ViewController
 
 ### Camadas do projeto
 
@@ -77,6 +86,13 @@ Responsável pela construção e execução das requisições HTTP.
 * NetworkRequest
 * Services
 
+**Coordinator**
+
+Responsável pelo controle de navegação e fluxo entre telas, desacoplando a navegação das ViewControllers.
+
+* AppCoordinator
+* HomeCoordinator
+
 ---
 
 ## Network Layer
@@ -87,27 +103,26 @@ A Network Layer foi construída para ser **genérica e reutilizável**, utilizan
 
 ## 🗂 Estrutura do projeto
 
-```
 NetworkLayer
+    EndPoint.swift
+    HTTPMethod.swift
+    NetworkRequest.swift
+    Services.swift
 
-    NetworkLayer
-        EndPoint.swift
-        HTTPMethod.swift
-        NetworkRequest.swift
-        Services.swift
+    Model
+        Movie.swift
 
-        Model
-            Movie.swift
+    View
+        MovieListViewController.swift
+        MovieDetailViewController.swift
+        MovieTableViewCell.swift
 
-        View
-            MovieListViewController.swift
-            MovieDetailViewController.swift
-            MovieTableViewCell.swift
+    ViewModel
+        MovieListViewModel.swift
 
-        ViewModel
-            MovieListViewModel.swift
-```
-
+    Coordinators
+        AppCoordinator.swift
+        HomeCoordinator.swift        
 ---
 
 ## Tecnologias utilizadas
@@ -117,6 +132,7 @@ NetworkLayer
 * URLSession
 * Codable
 * MVVM
+* Coordinator
 * AutoLayout
 * UITableView
 
