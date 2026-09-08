@@ -12,7 +12,6 @@ protocol NetworkDispatch {
 }
 
 public struct NetworkRequest: NetworkDispatch {
-    public static let instance = NetworkRequest()
     
     func dispatch<T>(endPoint: EndPoint, tipo: T.Type, resposta: @escaping (Result<T, NetworkError>) -> Void) where T : Codable {
         

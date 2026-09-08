@@ -18,13 +18,15 @@ class AppCoordinator {
 
     func start() {
         let imageLoader = ImageLoader()
-        let movieService = MovieService(network: NetworkRequest.instance)
+        let network = NetworkRequest()
+        let movieService = MovieService(network: network)
+        let favoritesStorage = FavoritesStorageService()
         
         let homeCoordinator = HomeCoordinator(
             navigationController: navigationController,
             imageLoader: imageLoader,
             movieService: movieService,
-            favoritesStorage: FavoritesStorageService.shared
+            favoritesStorage: favoritesStorage
         )
         
         childCoordinators.append(homeCoordinator)

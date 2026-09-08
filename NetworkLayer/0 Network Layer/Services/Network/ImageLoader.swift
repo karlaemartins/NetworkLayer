@@ -8,7 +8,6 @@
 import UIKit
 
 final class ImageLoader: ImageLoading {
-    static let shared = ImageLoader()
 
     private let cache = NSCache<NSURL, UIImage>()
     private var tasks: [UUID: URLSessionDataTask] = [:]

@@ -8,12 +8,9 @@
 import Foundation
 
 final class FavoritesStorageService: FavoritesStorageProtocol {
-
-    static let shared = FavoritesStorageService()
-
     private let favoritesKey = "favorite_movies"
 
-    private init() { }
+    init() { }
 
     func save(_ movie: Movie) {
         var favorites = fetchFavorites()
